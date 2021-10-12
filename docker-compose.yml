@@ -1,0 +1,81 @@
+version: '2'
+services:
+# The Database
+
+    database:
+
+        container_name: mysql_database
+
+        image: mysql:8.0
+
+        volumes:
+
+            - dbdata:/var/lib/mysql
+            - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+
+        environment:
+
+            - “MYSQL_USER=root”
+
+            - “MYSQL_PASSWORD=”
+
+            - "MYSQL_ALLOW_EMPTY_PASSWORD=true"
+
+        ports:
+
+            - 3306:3306
+
+#The Application
+
+    app:
+
+        container_name: gmar_app
+
+        build:
+
+            context: ./
+
+            dockerfile: docker-compose/app.dockerfile
+
+        volumes:
+            - ./app:/var/www/app
+            - ./config:/var/www/config
+            - ./database:/var/www/database
+            - ./graphql:/var/www/graphql
+            - ./routes:/var/www/routes
+            - ./resources:/var/www/resources
+            - ./tests:/var/www/test
+            - ./storage:/var/www/storage
+            - ./public:/var/www/public
+
+
+        env_file: .env.dev
+    web:
+
+        container_name: nginx_server
+
+        build:
+
+            context: ./
+
+            dockerfile: docker-compose/web.dockerfile
+
+        volumes:
+            - ./:/var/www
+            - ./storage/logs/:/var/log/nginx
+
+        ports:
+
+            - 80:80
+    
+
+        # redis
+
+    cache:
+
+        image: redis:6.2-alpine
+
+volumes:
+    dbdata:
+
+
