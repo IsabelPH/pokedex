@@ -17,9 +17,10 @@ class CreateUsuariosTable extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('apellidos');
-            $table->string('correo');
+            $table->string('correo')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('telefono');
+            $table->string('telefono')->unique();
             $table->string('sexo');
             $table->string('edad');
             $table->integer('pokebolas');

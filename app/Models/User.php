@@ -12,16 +12,23 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $table = 'usuarios';
     /**
      * The attributes that are mass assignable.
      *
      * @var string[]
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'nombre',    
+        'apellidos',
+        'correo',
+        'password',  
+        'telefono', 
+        'sexo', 
+        'edad', 
+        'pokebolas'
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -41,4 +48,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    //el modelo puede tener relaciones con direfentes nombres pokemons
+    public function pokemons(){
+        //
+        return $this->belongsToMany(Pokemon::class,'usuario_pokemon');
+    }
+
 }
