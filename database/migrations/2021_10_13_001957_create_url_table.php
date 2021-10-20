@@ -15,6 +15,8 @@ class CreateUrlTable extends Migration
     {
         Schema::create('url', function (Blueprint $table) {
             $table->id();
+            $table->string('archibable_id');
+            $table->string('archibable_tipo');
             $table->timestamps();
         });
     }
