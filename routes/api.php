@@ -1,5 +1,6 @@
 <?php
-
+use App\Http\Controllers\PokemonController;
+use App\Http\Controllers\TipoController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,3 +26,6 @@ Route::apiResource('usuarios', UserController::class);
 //GET - (1 resuro) -show
 //GET - (todos los recursos) - index -no lleva id
 // delete - destroy
+
+Route::apiResource('pokemons', PokemonController::class);
+Route::apiResource('tipos', TipoController::class);

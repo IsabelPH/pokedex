@@ -17,15 +17,9 @@ class CreatePokemonsTable extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('peso');
-            $table->string('foto');//
+            //$table->string('foto');//
 
-            //usuario
-            $table->unsignedBigInteger('usuario_id');    
-            $table->foreign('usuario_id')
-                ->references('id') 
-                ->on('usuarios') //cual tabla es la padre?
-                ->onUpdate('cascade') //que pasa si se actualiza el id del padre?
-                ->onDelete('cascade'); //que pasa si se elimina el padre
+            //no debe estar definido el usuario antes de ser atrapado
             //tipo pokemon
             $table->unsignedBigInteger('tipo_pokemon_id');    
             $table->foreign('tipo_pokemon_id')

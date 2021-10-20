@@ -14,7 +14,7 @@ class CreateTipoPokemonsTable extends Migration
     public function up()
     {
         Schema::create('tipo_pokemons', function (Blueprint $table) {
-            $table->id();
+            $table->id(); 
             $table->string('nombre');
             $table->timestamps();
         });
