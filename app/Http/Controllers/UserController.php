@@ -135,7 +135,7 @@ class UserController extends Controller
         }
         if($request->exists('apellidos')){
             $user->apellidos = $request->input('apellidos');
-            dd("no se puede");
+            //dd("no se puede");
         }
         if($request->has('correo')){
             $user->correo = $request->input('correo');

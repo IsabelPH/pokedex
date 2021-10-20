@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pokemon;
+use App\Validators\PokemonStoreValidator;
+use App\Validators\PokemonUpdateValidator;
 use Illuminate\Http\Request;
 
 class PokemonController extends Controller
@@ -14,8 +16,9 @@ class PokemonController extends Controller
      */
     public function index()
     {
-         return Pokemon::all();
-
+        return response()->json([
+            "data" => Pokemon::all()
+          ]);
     }
 
     /**
@@ -26,6 +29,14 @@ class PokemonController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = PokemonStoreValidator::createValidator($request);
+        if($validator->fails()){
+            return response()->json([
+                'message' => ' Error de validacion',
+                'errors' => $validator->errors()
+            ]);
+        }
+
         $pokemons = new Pokemon();
         $pokemons->nombre = $request->input('nombre');
         $pokemons->peso = $request->input('peso');
@@ -83,10 +94,24 @@ class PokemonController extends Controller
                 'message' => 'El pokemon no existe'
             ], 404);
         }
+
+        $validator = PokemonUpdateValidator::createValidator($request, $pokemon_id);
+        if($validator->fails()){
+            return response()->json([
+                'message' => ' Error de validacion',
+                'errors' => $validator->errors()
+            ]);
+        }
+        if($request->exists("nombre")){
+            $pokemons->nombre = $request->input('nombre');
+        }
+        if($request->exists("peso")){
+            $pokemons->peso = $request->input('peso');
+        }
+        if($request->exists("tipo_pokemon_id")){
+            $pokemons->tipo_pokemon_id = $request->input('tipo_pokemon_id');
+        }
         
-        $pokemons->nombre = $request->input('nombre');
-        $pokemons->peso = $request->input('peso');
-        $pokemons->tipo_pokemon_id = $request->input('tipo_pokemon_id');
         $pokemons->save();
         //
         return response()->json([

@@ -22,8 +22,7 @@ class UserStoreValidator
     public static function getRules()
     {
         return [
-            //arreglo asociativo
-            //cadena de texto, nombre del campo
+        
             'nombre'=> 'required|string|max:50', 
             'apellidos'=> 'required|string|max:50',
             'correo'=> [

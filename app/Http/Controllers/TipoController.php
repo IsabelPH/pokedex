@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tipo;
+use App\Validators\TipoStoreValidator;
+use App\Validators\TipoUpdateValidator;
 use Illuminate\Http\Request;
 
 class TipoController extends Controller
@@ -14,7 +16,9 @@ class TipoController extends Controller
      */
     public function index()
     {
-        return Tipo::all();
+        return response()->json([
+            "data" => Tipo::all()
+          ]);
     }
 
     /**
@@ -35,7 +39,15 @@ class TipoController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->input('nombre'));
+        
+        $validator = TipoStoreValidator::createValidator($request);
+        if($validator->fails()){
+            return response()->json([
+                'message' => ' Error de validacion',
+                'errors' => $validator->errors()
+            ]);
+        }
+
         $tipos = new Tipo(); 
         $tipos->nombre = $request->input('nombre');
         
@@ -91,7 +103,17 @@ class TipoController extends Controller
             ], 404);
         }
         
-        $tipos->nombre = $request->input('nombre');
+        $validator = TipoUpdateValidator::createValidator($request, $tipo_id);
+        if($validator->fails()){
+            return response()->json([
+                'message' => ' Error de validacion',
+                'errors' => $validator->errors()
+            ]);
+        }
+        
+        if($request->exists("nombre")){
+            $tipos->nombre = $request->input('nombre');
+        }
         $tipos->save();
         //
         return response()->json([
