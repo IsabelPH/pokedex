@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Validators\UserStoreValidator;
 use App\Validators\UserUpdateValidator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -86,14 +87,21 @@ class UserController extends Controller
     public function show($usuario_id)
     {
         //validator se usa en un formulario
-
         //Validamos que el id sea correcto
-        $user = User::find($usuario_id);
+        $user = User::find($usuario_id);      
         if($user == null){
             return response()->json([
                 'message' => 'El usuario no existe'
             ], 404);
         }
+        $authUser = Auth::user();
+        // usuario autenticado y recurso
+        if($authUser->cant('view',$user )){
+            return response()->json([
+                "message" => 'El usuarion no esta autorizado para esta accion, '
+            ], 403);
+        }  
+
         return $user->toJson();
 
     }
