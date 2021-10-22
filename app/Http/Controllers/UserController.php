@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Validators\UserStoreValidator;
 use App\Validators\UserUpdateValidator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
@@ -57,7 +58,8 @@ class UserController extends Controller
         $user->nombre = $request->input('nombre');
         $user->apellidos = $request->input('apellidos');
         $user->correo = $request->input('correo');
-        $user->password = $request->input('password');
+        $user->password = Hash::make($request->input('password'));
+        
         $user->telefono = $request->input('telefono');
         $user->sexo = $request->input('sexo');
         $user->edad = $request->input('edad');

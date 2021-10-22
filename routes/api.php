@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PokemonController;
 use App\Http\Controllers\TipoController;
 use App\Http\Controllers\UserController;
@@ -29,3 +31,7 @@ Route::apiResource('usuarios', UserController::class);
 
 Route::apiResource('pokemons', PokemonController::class);
 Route::apiResource('tipos', TipoController::class);
+
+
+
+Route::post('/login', [LoginController::class, 'login']);

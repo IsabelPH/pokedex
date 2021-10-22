@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\Sanctum; 
 
 class User extends Authenticatable
 {
@@ -56,4 +57,15 @@ class User extends Authenticatable
         return $this->belongsToMany(Pokemon::class,'usuario_pokemon');
     }
 
+    public function test_task_list_can_be_retrieved()
+{
+    Sanctum::actingAs(
+        User::factory()->create(),
+        ['view-tasks']
+    );
+
+    $response=$this->get('/api/task');
+
+    $response->assertOk();
+}
 }
