@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Pokemon;
+use App\Models\Tipo;
+use App\Policies\PokemonPolicy;
+use App\Policies\TipoPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -14,8 +18,10 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
-        'App\Models\User' =>'App\Policies\UserPolicy'
-        //User::class => UserPolicy::class
+        //'App\Models\User' =>'App\Policies\UserPolicy'
+        User::class => UserPolicy::class,
+        Pokemon::class => PokemonPolicy::class,
+        Tipo::class => TipoPolicy::class
     ];
 
     /**

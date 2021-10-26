@@ -6,6 +6,7 @@ use App\Models\Pokemon;
 use App\Validators\PokemonStoreValidator;
 use App\Validators\PokemonUpdateValidator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PokemonController extends Controller
 {
@@ -67,6 +68,13 @@ class PokemonController extends Controller
             return response()->json([
                 'message' => 'El pokemon no existe'
             ], 404);
+        }
+        $authUser = Auth::user();
+        // usuario autenticado y recurso
+        if($authUser->cant('view',$pokemons )){
+            return response()->json([
+                "message" => 'El usuarion no esta autorizado para esta accion, '
+            ], 403);
         }
         return $pokemons->toJson();
     }

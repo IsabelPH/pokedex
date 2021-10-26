@@ -6,6 +6,7 @@ use App\Models\Tipo;
 use App\Validators\TipoStoreValidator;
 use App\Validators\TipoUpdateValidator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TipoController extends Controller
 {
@@ -76,6 +77,15 @@ class TipoController extends Controller
                 'message' => 'El tipo de pokemon no existe'
             ], 404);
         }
+
+        $authUser = Auth::user();
+        // usuario autenticado y recurso
+        if($authUser->cant('view',$tipos )){
+            return response()->json([
+                "message" => 'El usuarion no esta autorizado para esta accion, '
+            ], 403);
+        }
+
         return $tipos->toJson();
     }
 
