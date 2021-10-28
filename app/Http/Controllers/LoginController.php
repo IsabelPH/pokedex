@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\login;
+
 use App\Models\User;
 use App\Validators\LoginStoreValidator;
 use Illuminate\Http\Request;
