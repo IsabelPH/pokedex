@@ -7,6 +7,7 @@ use App\Validators\PokemonStoreValidator;
 use App\Validators\PokemonUpdateValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class PokemonController extends Controller
 {
@@ -21,9 +22,15 @@ class PokemonController extends Controller
      */
     public function index()
     {
-        return response()->json([
-            "data" => Pokemon::all()
-          ]);
+        $user = Auth::user();
+        // usuario autenticado y recurso
+        if($user->cant('viewAny',Pokemon::class )){
+            //Log::debug('cant');
+            return response()->json([
+                "message" => 'El usuarion no esta autorizado para esta accion viewAny '
+            ], 403);
+        }
+        return Pokemon::all();
     }
 
     /**
@@ -40,6 +47,14 @@ class PokemonController extends Controller
                 'message' => ' Error de validacion',
                 'errors' => $validator->errors()
             ]);
+        }
+        $user = Auth::user();
+        // usuario autenticado y recurso
+        if($user->cant('create',Pokemon::class )){
+            Log::debug('cant');
+            return response()->json([
+                "message" => 'El usuarion no esta autorizado para esta accion viewAny '
+            ], 403);
         }
 
         $pokemons = new Pokemon();
@@ -73,7 +88,7 @@ class PokemonController extends Controller
         // usuario autenticado y recurso
         if($authUser->cant('view',$pokemons )){
             return response()->json([
-                "message" => 'El usuarion no esta autorizado para esta accion, '
+                "message" => 'El usuario no esta autorizado para esta accion.'
             ], 403);
         }
         return $pokemons->toJson();
@@ -106,6 +121,15 @@ class PokemonController extends Controller
                 'message' => 'El pokemon no existe'
             ], 404);
         }
+        $user = Auth::user();
+        // usuario autenticado y recurso
+        if($user->cant('update',$pokemons)){
+            //Log::debug('cant');
+            return response()->json([
+                "message" => 'El usuario no esta autorizado para esta accion. '
+            ], 403);
+        }
+        
 
         $validator = PokemonUpdateValidator::createValidator($request, $pokemon_id);
         if($validator->fails()){
@@ -146,6 +170,15 @@ class PokemonController extends Controller
                 'message' => 'El pokemon no existe'
             ], 404);
         }
+        $user = Auth::user();
+        // usuario autenticado y recurso
+        if($user->cant('delete', $pokemons)){
+            //Log::debug('cant');
+            return response()->json([
+                "message" => 'El usuarion no esta autorizado para esta accion '
+            ], 403);
+        }
+
         $pokemons->delete();
 
         return response()->json(null, 204);

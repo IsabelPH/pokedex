@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Tipo;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\DB;
 
 class TipoPolicy
 {
@@ -18,48 +19,39 @@ class TipoPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->hasPermissionTo('ver cualquier tipo de pokemon');
+        //cualquier tipo
     }
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Tipo  $tipo
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
+
     public function view(User $user, Tipo $tipo)
     {
         //
-        return $user->id == $tipo->id;
+        if($user->hasPermissionTo('ver tipo de pokemon')){
+            return true;
+        }
+        
+        
     }
 
 
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Tipo  $tipo
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
+    public function create(User $user){
+        //crear tipo
+        return $user->hasPermissionTo('crear tipos para pokemons');
+    }
+
     public function update(User $user, Tipo $tipo)
     {
-        //
-        return $user->id == $tipo->id;
+        //editar tipo
+        return $user->hasPermissionTo('editar cualquier tipo');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Tipo  $tipo
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
+
     public function delete(User $user, Tipo $tipo)
     {
-        //
-        return $user->id == $tipo->id; 
+        //eliminar cualquier tipo
+        return $user->hasPermissionTo('eliminar cualquier tipo');
     }
 
-    
+   
 }

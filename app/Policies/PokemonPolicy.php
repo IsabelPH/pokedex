@@ -6,6 +6,7 @@ use App\Models\Pokemon;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PokemonPolicy
 {
@@ -19,7 +20,12 @@ class PokemonPolicy
      */
     public function viewAny(User $user)
     {
-        // 
+        return $user->hasPermissionTo('ver cualquier pokemon');
+          
+    }
+
+    public function create(User $user){
+        return $user->hasPermissionTo('crear pokemons');
     }
 
     /**
@@ -31,6 +37,9 @@ class PokemonPolicy
      */
     public function view(User $user, Pokemon $pokemon)
     {
+        if($user->hasPermissionTo('ver cualquier pokemon')){
+            return true;
+        }
         $resultados = DB::table('usuario_pokemon')->
             select('*')->
             where('usuario_id', $user->id)->
@@ -47,9 +56,8 @@ class PokemonPolicy
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user, Pokemon $pokemon)
-    {
-        //
-        return $user->id  == $pokemon->id;
+    {           
+        return $user->hasPermissionTo('editar pokemons');
     }
 
     /**
@@ -62,7 +70,7 @@ class PokemonPolicy
     public function delete(User $user, Pokemon $pokemon)
     {
         //
-        return $user->id  == $pokemon->id;
+        return $user->hasPermissionTo('eliminar pokemons');
     }
 
     

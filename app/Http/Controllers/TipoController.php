@@ -21,6 +21,13 @@ class TipoController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        // usuario autenticado y recurso
+        if($user->cant('viewAny',Tipo::class)){
+            return response()->json([
+                "message" => 'El usuario no esta autorizado para esta accion. '
+            ], 403);
+        }
         return response()->json([
             "data" => Tipo::all()
           ]);
@@ -53,9 +60,17 @@ class TipoController extends Controller
             ]);
         }
 
+        $user = Auth::user();
+        // usuario autenticado y recurso
+        if($user->cant('create',Tipo::class )){
+            Log::debug('cant');
+            return response()->json([
+                "message" => 'El usuarion no esta autorizado para esta accion viewAny '
+            ], 403);
+        }
+
         $tipos = new Tipo(); 
         $tipos->nombre = $request->input('nombre');
-        
         $tipos->save();
 
         return response()->json([
@@ -117,6 +132,15 @@ class TipoController extends Controller
             ], 404);
         }
         
+        $user = Auth::user();
+        // usuario autenticado y recurso
+        if($user->cant('update',$tipos)){
+            return response()->json([
+                "message" => 'El usuario no esta autorizado para esta accion. '
+            ], 403);
+        }
+        
+
         $validator = TipoUpdateValidator::createValidator($request, $tipo_id);
         if($validator->fails()){
             return response()->json([
@@ -148,6 +172,13 @@ class TipoController extends Controller
             return response()->json([
                 'message' => 'El pokemon no existe'
             ], 404);
+        }
+        $user = Auth::user();
+        // usuario autenticado y recurso
+        if($user->cant('delete', $tipos)){
+            return response()->json([
+                "message" => 'El usuarion no esta autorizado para esta accion '
+            ], 403);
         }
         $tipos->delete();
 
