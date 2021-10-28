@@ -69,9 +69,9 @@ class UserController extends Controller
         $user->sexo = $request->input('sexo');
         $user->edad = $request->input('edad');
         $user->pokebolas = 10;
-
+        
         $user->save();
-
+        $user->assignRole('entrenador');
         //return $user;
         return response()->json([
             "data" => $user -> toArray()
