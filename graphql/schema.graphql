@@ -5,14 +5,29 @@ scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
 type Query {
-    users: [User!]! @paginate(defaultCount: 10)
+    users: [User!]! @all 
     user(id: ID @eq): User @find
+}
+type Mutation{
+    crearUsuario(
+        nombre: String!,
+        apellidos: String!,
+        correo: String!,
+        password: String! @hash,
+        telefono: String!,
+        sexo: String!,
+        edad: Int!,
+        pokebolas: Int!
+    ): User! @create @validator
 }
 
 type User {
     id: ID!
-    name: String!
-    email: String!
-    created_at: DateTime!
-    updated_at: DateTime!
+    nombre: String!
+    apellidos: String!
+    correo: String!
+    telefono: String!
+    sexo: String!
+    edad:Int!
+    pokebolas: Int!
 }
