@@ -9,16 +9,27 @@ type Query {
     user(id: ID @eq): User @find
 }
 type Mutation{
+    #uso de directivas
+    # crearUsuario(
+    #    nombre: String!,
+    #     apellidos: String!,
+    #     correo: String!,
+    #     password: String! @hash,
+    #     telefono: String!,
+    #     sexo: String!,
+    #     edad: Int!,
+    #     pokebolas: Int!
+    # ): User! @create @validator
     crearUsuario(
-        nombre: String!,
-        apellidos: String!,
-        correo: String!,
-        password: String! @hash,
-        telefono: String!,
-        sexo: String!,
-        edad: Int!,
-        pokebolas: Int!
-    ): User! @create @validator
+        nombre: String!
+        apellidos: String!
+        correo: String! 
+        password: String! @hash
+        telefono: String!
+        sexo: String!
+        edad: Int!
+
+    ):User! @validator
 }
 
 type User {
