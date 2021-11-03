@@ -17,7 +17,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        //solo el admin puede ver todos
+        return $user->hasPermissionTo('ver todos los usuarios');
     }
 
     /**

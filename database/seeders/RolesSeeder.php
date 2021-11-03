@@ -35,7 +35,7 @@ class RolesSeeder extends Seeder
         Permission::create(["name" => 'crear tipos para pokemons']);
         Permission::create(["name" => 'editar cualquier tipo']);
         Permission::create(["name" => 'eliminar cualquier tipo']);
-        
+        Permission::create(["name" => 'ver todos los usuarios']);
         
         
         
@@ -75,7 +75,8 @@ class RolesSeeder extends Seeder
             'ver cualquier tipo de pokemon',
             'crear tipos para pokemons',
             'editar cualquier tipo',
-            'eliminar cualquier tipo'
+            'eliminar cualquier tipo',
+            'ver todos los usuarios'
        
         ]);
             

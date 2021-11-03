@@ -25,7 +25,7 @@ class LoginController extends Controller
 
         $user = User::where('correo', $request->input('correo'))->get()->first();//collection [usuario]
         //coleccion de un solo elemento 
-        //si la coleccion es vacia, el usuario va a ser ne\ull
+        //si la coleccion es vacia, el usuario va a ser null
 
         /***
          * si el usuario es nulo, va devolver error
