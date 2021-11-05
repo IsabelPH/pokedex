@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\DB;
 
 class UserPolicy
 {
@@ -31,7 +32,14 @@ class UserPolicy
     {
         //solo el usuario dueno va a poder ver sus propios datos
         // cosas por hacer: comprobar  si el usuario es admin  
-        return $user->id  == $model->id;
+        if($user->hasPermissionTo('ver  solo un usuario')){
+            return true;
+        }
+        $resultado = DB::table("usuarios")->
+            select('*')->
+            where('id', $user->id)->get();
+        return $resultado->count()>0;
+        //return $user->id  == $model->id;
     }
 
 
@@ -44,8 +52,9 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        //
-        return $user->id  == $model->id;
+
+        return $user->hasPermissionTo('modificar un  usuario');
+        //return $user->id  == $model->id;
     }
 
     /**
@@ -57,8 +66,8 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        //
-        return $user->id  == $model->id;
+        return $user->hasPermissionTo('eliminar el usuario');
+        //return $user->id  == $model->id;
     }
 
    

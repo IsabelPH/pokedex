@@ -7,6 +7,9 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 type Query {
     users: [User!]! @all @guard @can(ability: "viewAny")
     user(id: ID @eq): User @find
+    tipos: [Tipo!]! @all @guard @can(ability: "viewAny")
+    pokemons: [Pokemon!]! @all @guard @can(ability: "viewAny")
+
 }
 type Mutation{
     #uso de directivas
@@ -22,7 +25,7 @@ type Mutation{
     # ): User! @create @validator
     crearUsuario(
         nombre: String!
-        apellidos: String!
+        apellidos: String! 
         correo: String! 
         password: String! @hash
         telefono: String!
@@ -37,7 +40,19 @@ type Mutation{
         password: String! 
 
     ): UsuarioLogeado! 
+
+    crearTipoPokemon(
+        nombre: String!
+    ): Tipo! @validator @guard @can(ability:"create")
+    
+    crearPokemon(
+        nombre: String!
+        peso: String!
+        TipoPokemon: ID!
+    ): Pokemon! @validator @guard @can(ability:"create")
+
 }
+
 type UsuarioLogeado{
     usuario:User
     accessToken:String!
@@ -52,4 +67,16 @@ type User {
     sexo: String!
     edad:Int!
     pokebolas: Int!
+}
+
+type Tipo{
+    id: ID!
+    nombre: String!
+}
+
+type Pokemon{
+    id: ID!
+    nombre: String!
+    peso: String!
+    TipoPokemon: ID! 
 }
